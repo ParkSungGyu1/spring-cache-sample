@@ -40,8 +40,14 @@ public class LocalCacheConfig {
                         .build()
         );
 
+        var dashboardTop = new CaffeineCache("dashboard:topProducts",
+                Caffeine.newBuilder()
+                        .maximumSize(100)
+                        .expireAfterWrite(Duration.ofMinutes(10)) // 통계는 10분 정도 캐싱해도 무방
+                        .build());
+
         var manager = new SimpleCacheManager();
-        manager.setCaches(List.of(orderDetail, orderSummaries, productList));
+        manager.setCaches(List.of(orderDetail, orderSummaries, productList,dashboardTop));
         return manager;
     }
 }
